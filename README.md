@@ -1,2 +1,2 @@
 ## Discord bot
-# Auto-kicker (bans manager)
+# Auto-kicker (ban management commands)
