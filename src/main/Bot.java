@@ -1,17 +1,10 @@
 package main;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
-import net.dv8tion.jda.api.events.guild.member.GenericGuildMemberEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberUpdateEvent;
 import net.dv8tion.jda.api.events.role.GenericRoleEvent;
 import net.dv8tion.jda.api.events.role.update.GenericRoleUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -34,7 +27,21 @@ public class Bot extends ListenerAdapter {
                 ).queue();
     }
 
+    @Override
+    public void onGenericRole(@NotNull GenericRoleEvent event) {
+        event.getGuild().getTextChannels().get(0)
+                .sendMessage(String.format(
+                        "onGenericRole event triggered: %s", event.getRole().getAsMention())
+                ).queue();
+    }
 
+    @Override
+    public void onGenericRoleUpdate(@NotNull GenericRoleUpdateEvent event) {
+        event.getGuild().getTextChannels().get(0)
+                .sendMessage(String.format(
+                        "onGenericRoleUpdate event triggered: %s", event.getRole().getAsMention())
+                ).queue();
+    }
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
