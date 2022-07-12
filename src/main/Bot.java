@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.events.role.GenericRoleEvent;
+import net.dv8tion.jda.api.events.role.update.GenericRoleUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.jetbrains.annotations.NotNull;
@@ -15,10 +16,14 @@ import org.jetbrains.annotations.NotNull;
 import javax.security.auth.login.LoginException;
 
 public class Bot extends ListenerAdapter {
+
     @Override
-    public void onGenericRole(@NotNull GenericRoleEvent event) {
-        System.out.println("genric role event triggered");
-        event.getGuild().getTextChannels().get(0).sendMessage("test...GenericRoleEvent triggered: " + event).queue();
+    public void onGenericRoleUpdate(@NotNull GenericRoleUpdateEvent event) {
+        event.getGuild().getTextChannels().get(0).sendMessage("test...GenericRoleUpdate event triggered: " + event).queue();
+    }
+
+    @Override
+    public void onGenericEvent(@NotNull GenericEvent event) {
     }
 
     @Override
