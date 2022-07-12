@@ -24,7 +24,7 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
-        String user_tag = event.getUser().getAsTag();
+        String user_tag = event.getUser().getAsMention();
 
         event.getGuild().getTextChannels().get(0)
                 .sendMessage(String.format(
