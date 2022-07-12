@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +14,16 @@ import org.jetbrains.annotations.NotNull;
 import javax.security.auth.login.LoginException;
 
 public class Bot extends ListenerAdapter {
+    @Override
+    public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
+        super.onGuildMemberRoleAdd(event);
+    }
+
+    @Override
+    public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
+        super.onGuildMemberJoin(event);
+    }
+
     public static void main(String[] args) throws LoginException {
         if(args.length < 1){
             System.out.println("Missing argument : token");
@@ -29,11 +41,6 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-        System.out.println("API is readys!");
-    }
-
-    @Override
-    public void onGenericEvent(@NotNull GenericEvent event) {
-        System.out.println(event);
+        System.out.println("API is ready!");
     }
 }
