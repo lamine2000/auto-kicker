@@ -3,6 +3,8 @@ package main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GenericGuildMemberEvent;
@@ -21,23 +23,20 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGenericRoleUpdate(@NotNull GenericRoleUpdateEvent event) {
-        String[] event_path = event.toString().split("\\.");
-        String event_str = event_path[event_path.length -1];
-        event.getGuild().getTextChannels().get(0).sendMessage("test...GenericRoleUpdate event triggered: " + event_str).queue();
+        String role = event.getRole().getName();
+        event.getGuild().getTextChannels().get(0).sendMessage("test...onGenericRoleUpdate event triggered. role name : " + role).queue();
     }
 
     @Override
     public void onGenericGuildMember(@NotNull GenericGuildMemberEvent event) {
-        String[] event_path = event.toString().split("\\.");
-        String event_str = event_path[event_path.length -1];
-        event.getGuild().getTextChannels().get(0).sendMessage("test...onGenericGuildMember event triggered: " + event_str).queue();
+        String user_tag = event.getUser().getAsTag();
+        event.getGuild().getTextChannels().get(0).sendMessage("test...onGenericGuildMember event triggered by : " + user_tag).queue();
     }
 
     @Override
     public void onGuildMemberUpdate(@NotNull GuildMemberUpdateEvent event) {
-        String[] event_path = event.toString().split("\\.");
-        String event_str = event_path[event_path.length -1];
-        event.getGuild().getTextChannels().get(0).sendMessage("test...onGuildMemberUpdate event triggered: " + event_str).queue();
+        String user_tag = event.getUser().getAsTag();
+        event.getGuild().getTextChannels().get(0).sendMessage("test...onGuildMemberUpdate event triggered by : " + user_tag).queue();
     }
 
     @Override
