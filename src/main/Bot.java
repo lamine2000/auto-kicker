@@ -21,17 +21,23 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGenericRoleUpdate(@NotNull GenericRoleUpdateEvent event) {
-        event.getGuild().getTextChannels().get(0).sendMessage("test...GenericRoleUpdate event triggered: " + event).queue();
+        String[] event_path = event.toString().split("\\.");
+        String event_str = event_path[event_path.length -1];
+        event.getGuild().getTextChannels().get(0).sendMessage("test...GenericRoleUpdate event triggered: " + event_str).queue();
     }
 
     @Override
     public void onGenericGuildMember(@NotNull GenericGuildMemberEvent event) {
-        event.getGuild().getTextChannels().get(0).sendMessage("test...onGenericGuildMember event triggered: " + event).queue();
+        String[] event_path = event.toString().split("\\.");
+        String event_str = event_path[event_path.length -1];
+        event.getGuild().getTextChannels().get(0).sendMessage("test...onGenericGuildMember event triggered: " + event_str).queue();
     }
 
     @Override
     public void onGuildMemberUpdate(@NotNull GuildMemberUpdateEvent event) {
-        event.getGuild().getTextChannels().get(0).sendMessage("test...onGuildMemberUpdate event triggered: " + event).queue();
+        String[] event_path = event.toString().split("\\.");
+        String event_str = event_path[event_path.length -1];
+        event.getGuild().getTextChannels().get(0).sendMessage("test...onGuildMemberUpdate event triggered: " + event_str).queue();
     }
 
     @Override
