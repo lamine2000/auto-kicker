@@ -5,11 +5,9 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
@@ -17,7 +15,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import org.jetbrains.annotations.NotNull;
@@ -28,11 +25,9 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Objects;
 
-import static net.dv8tion.jda.api.interactions.commands.OptionType.*;
-
 public class Bot extends ListenerAdapter {
     public static void main(String[] args) throws LoginException {
-        if (args.length < 1) {
+        if(args.length < 1){
             System.out.println("Missing argument : token");
             System.exit(1);
         }
@@ -47,94 +42,56 @@ public class Bot extends ListenerAdapter {
 
         CommandListUpdateAction commands = jda.updateCommands();
 
-        // Moderation commands with required options
         commands.addCommands(
-                Commands.slash("ban", "Ban a user from this server. Requires permission to ban users.")
-                        .addOptions(new OptionData(USER, "user", "The user to ban") // USER type allows to include members of the server or other users by id
-                                .setRequired(true)) // This command requires a parameter
-                        .addOptions(new OptionData(INTEGER, "del_days", "Delete messages from the past days.") // This is optional
-                                .setRequiredRange(0, 7)) // Only allow values between 0 and 7 (inclusive)
-                        .addOptions(new OptionData(STRING, "reason", "The ban reason to use (default: Banned by <user>)")) // optional reason
-                        .setGuildOnly(true) // This way the command can only be executed from a guild, and not the DMs
-                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS)) // Only members with the BAN_MEMBERS permission are going to see this command
-        );
-
-        // Simple reply commands
-        commands.addCommands(
-                Commands.slash("say", "Makes the bot say what you tell it to")
-                        .addOption(STRING, "content", "What the bot should say", true) // you can add required options like this too
-        );
-
-        // Commands without any inputs
-        commands.addCommands(
-                Commands.slash("leave", "Make the bot leave the server")
-                        .setGuildOnly(true) // this doesn't make sense in DMs
-                        .setDefaultPermissions(DefaultMemberPermissions.DISABLED) // only admins should be able to use this command.
-        );
-
-        commands.addCommands(
-                Commands.slash("prune", "Prune messages from this channel")
-                        .addOption(INTEGER, "amount", "How many messages to prune (Default 100)") // simple optional argument
+                Commands.slash("ban", "Ban a user from this server. Requires permission to ban users")
+                        .addOptions(new OptionData(OptionType.USER, "user", "The user to ban")
+                                .setRequired(true))
+                        .addOptions(new OptionData(OptionType.INTEGER, "delay_days", "Delete messages from the past days")
+                                .setRequiredRange(0, 7))
+                        .addOptions(new OptionData(OptionType.STRING, "reason", "The ban reason to use (default: Banned bu <user>)"))
                         .setGuildOnly(true)
-                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE))
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(
+                                Permission.BAN_MEMBERS,
+                                Permission.MESSAGE_MANAGE
+                        ))
         );
 
-        // Send the new set of commands to discord, this will override any existing global commands with the new set provided here
+        commands.addCommands(
+                Commands.slash("unban", "Unban a user from this server.")
+                        .addOptions(new OptionData(OptionType.USER, "user", "The user to unban")
+                                .setRequired(true))
+                        .setGuildOnly(true)
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(
+                                Permission.BAN_MEMBERS
+                        ))
+        );
         commands.queue();
     }
 
-
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event)
-    {
-        // Only accept commands from guilds
-        if (event.getGuild() == null)
-            return;
-        switch (event.getName())
-        {
-            case "ban":
-                Member member = event.getOption("user").getAsMember(); // the "user" option is required, so it doesn't need a null-check here
-                User user = event.getOption("user").getAsUser();
-                ban(event, user, member);
-                break;
-            case "say":
-                say(event, event.getOption("content").getAsString()); // content is required so no null-check here
-                break;
-            case "leave":
-                leave(event);
-                break;
-            case "prune": // 2 stage command with a button prompt
-                prune(event);
-                break;
-            default:
-                event.reply("I can't handle that command right now :(").setEphemeral(true).queue();
-        }
+    public void onReady(@NotNull ReadyEvent event) {
+        System.out.println("API is ready!");
     }
 
     @Override
-    public void onButtonInteraction(ButtonInteractionEvent event)
-    {
-        String[] id = event.getComponentId().split(":"); // this is the custom id we specified in our button
-        String authorId = id[0];
-        String type = id[1];
-        // Check that the button is for the user that clicked it, otherwise just ignore the event (let interaction fail)
-        if (!authorId.equals(event.getUser().getId()))
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
+        if(event.getGuild() == null)
             return;
-        event.deferEdit().queue(); // acknowledge the button was clicked, otherwise the interaction will fail
 
-        MessageChannel channel = event.getChannel();
-        switch (type)
-        {
-            case "prune":
-                int amount = Integer.parseInt(id[2]);
-                event.getChannel().getIterableHistory()
-                        .skipTo(event.getMessageIdLong())
-                        .takeAsync(amount)
-                        .thenAccept(channel::purgeMessages);
-                // fallthrough delete the prompt message with our buttons
-            case "delete":
-                event.getHook().deleteOriginal().queue();
+        if(event.getName().equals("ban")) {
+            Member member = Objects.requireNonNull(event.getOption("user")).getAsMember();
+            User user = Objects.requireNonNull(event.getOption("user")).getAsUser();
+
+            ban(event, user, member);
         }
+
+        else if(event.getName().equals("unban")){
+            User user = Objects.requireNonNull(event.getOption("user")).getAsUser();
+            unban(event, user);
+        }
+
+        else
+            event.reply("I can't handle that command right now :(").setEphemeral(true).queue();
     }
 
     public void ban(SlashCommandInteractionEvent event, User user, Member member)
@@ -142,21 +99,18 @@ public class Bot extends ListenerAdapter {
         event.deferReply(true).queue(); // Let the user know we received the command before doing anything else
         InteractionHook hook = event.getHook(); // This is a special webhook that allows you to send messages without having permissions in the channel and also allows ephemeral messages
         hook.setEphemeral(true); // All messages here will now be ephemeral implicitly
-        if (!event.getMember().hasPermission(Permission.BAN_MEMBERS))
-        {
+        if (!Objects.requireNonNull(event.getMember()).hasPermission(Permission.BAN_MEMBERS)) {
             hook.sendMessage("You do not have the required permissions to ban users from this server.").queue();
             return;
         }
 
-        Member selfMember = event.getGuild().getSelfMember();
-        if (!selfMember.hasPermission(Permission.BAN_MEMBERS))
-        {
+        Member selfMember = Objects.requireNonNull(event.getGuild()).getSelfMember();
+        if (!selfMember.hasPermission(Permission.BAN_MEMBERS)) {
             hook.sendMessage("I don't have the required permissions to ban users from this server.").queue();
             return;
         }
 
-        if (member != null && !selfMember.canInteract(member))
-        {
+        if (member != null && !selfMember.canInteract(member)) {
             hook.sendMessage("This user is too powerful for me to ban.").queue();
             return;
         }
@@ -174,34 +128,10 @@ public class Bot extends ListenerAdapter {
                 .reason(reason) // audit-log reason
                 .flatMap(v -> hook.sendMessage("Banned user " + user.getAsTag()))
                 .queue();
+
     }
 
-    public void say(SlashCommandInteractionEvent event, String content)
-    {
-        event.reply(content).queue(); // This requires no permissions!
-    }
-
-    public void leave(SlashCommandInteractionEvent event)
-    {
-        if (!event.getMember().hasPermission(Permission.KICK_MEMBERS))
-            event.reply("You do not have permissions to kick me.").setEphemeral(true).queue();
-        else
-            event.reply("Leaving the server... :wave:") // Yep we received it
-                    .flatMap(v -> event.getGuild().leave()) // Leave server after acknowledging the command
-                    .queue();
-    }
-
-    public void prune(SlashCommandInteractionEvent event)
-    {
-        OptionMapping amountOption = event.getOption("amount"); // This is configured to be optional so check for null
-        int amount = amountOption == null
-                ? 100 // default 100
-                : (int) Math.min(200, Math.max(2, amountOption.getAsLong())); // enforcement: must be between 2-200
-        String userId = event.getUser().getId();
-        event.reply("This will delete " + amount + " messages.\nAre you sure?") // prompt the user with a button menu
-                .addActionRow(// this means "<style>(<id>, <label>)", you can encode anything you want in the id (up to 100 characters)
-                        Button.secondary(userId + ":delete", "Nevermind!"),
-                        Button.danger(userId + ":prune:" + amount, "Yes!")) // the first parameter is the component id we use in onButtonInteraction above
-                .queue();
+    public void unban(SlashCommandInteractionEvent event, User user){
+        Objects.requireNonNull(event.getGuild()).unban(user).queue();
     }
 }
