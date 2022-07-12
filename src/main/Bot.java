@@ -37,6 +37,8 @@ public class Bot extends ListenerAdapter {
                 ).queue();
     }
 
+
+
     @Override
     public void onGenericEvent(@NotNull GenericEvent event) {
         if(event instanceof GuildMemberRoleAddEvent){
@@ -46,6 +48,9 @@ public class Bot extends ListenerAdapter {
                     ).queue();
         }
 
+        else{
+            System.out.println(event);
+        }
     }
 
     @Override
