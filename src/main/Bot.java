@@ -17,6 +17,26 @@ import javax.security.auth.login.LoginException;
 
 public class Bot extends ListenerAdapter {
 
+    public static void main(String[] args) throws LoginException {
+        if(args.length < 1){
+            System.out.println("Missing argument : token");
+            System.exit(1);
+        }
+
+        final String token = args[0];
+        JDABuilder.create(token,
+                        GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES)
+
+                .addEventListeners(new Bot())
+                .setActivity(Activity.watching("You, haha !!"))
+                .build();
+    }
+
+    @Override
+    public void onReady(@NotNull ReadyEvent event) {
+        System.out.println("API is readyssss!");
+    }
+
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
         String user_mention = event.getUser().getAsMention();
@@ -57,25 +77,5 @@ public class Bot extends ListenerAdapter {
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
         System.out.println("event 2 triggered");
         event.getGuild().getTextChannels().get(0).sendMessage("test...GuildMemberJoinEvent triggered").queue();
-    }
-
-    public static void main(String[] args) throws LoginException {
-        if(args.length < 1){
-            System.out.println("Missing argument : token");
-            System.exit(1);
-        }
-
-        final String token = args[0];
-        JDABuilder.createLight(token,
-                        GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES)
-
-                .addEventListeners(new Bot())
-                .setActivity(Activity.watching("You, haha !!"))
-                .build();
-    }
-
-    @Override
-    public void onReady(@NotNull ReadyEvent event) {
-        System.out.println("API is readyssss!");
     }
 }
