@@ -30,7 +30,7 @@ public class Bot extends ListenerAdapter {
                 .sendMessage(String.format(
                         "Yaaay !!! %s has been assigned a new role: %s",
                         user_mention,
-                        event.getRoles().get(0).getName())
+                        event.getRoles().get(0).getAsMention())
                 ).queue();
     }
 
