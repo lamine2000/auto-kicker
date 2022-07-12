@@ -5,8 +5,10 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.guild.member.GenericGuildMemberEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberUpdateEvent;
 import net.dv8tion.jda.api.events.role.GenericRoleEvent;
 import net.dv8tion.jda.api.events.role.update.GenericRoleUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -23,7 +25,13 @@ public class Bot extends ListenerAdapter {
     }
 
     @Override
-    public void onGenericEvent(@NotNull GenericEvent event) {
+    public void onGenericGuildMember(@NotNull GenericGuildMemberEvent event) {
+        event.getGuild().getTextChannels().get(0).sendMessage("test...onGenericGuildMember event triggered: " + event).queue();
+    }
+
+    @Override
+    public void onGuildMemberUpdate(@NotNull GuildMemberUpdateEvent event) {
+        event.getGuild().getTextChannels().get(0).sendMessage("test...onGuildMemberUpdate event triggered: " + event).queue();
     }
 
     @Override
@@ -39,7 +47,7 @@ public class Bot extends ListenerAdapter {
         }
 
         final String token = args[0];
-        JDA jda = JDABuilder.createLight(token,
+        JDABuilder.createLight(token,
                         GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES)
 
                 .addEventListeners(new Bot())
