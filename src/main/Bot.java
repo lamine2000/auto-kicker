@@ -41,6 +41,6 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-        System.out.println("API is ready!");
+        System.out.println("API is readyss!");
     }
 }
