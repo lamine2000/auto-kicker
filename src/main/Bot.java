@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.security.auth.login.LoginException;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.Objects;
 
 public class Bot extends ListenerAdapter {
@@ -33,9 +34,7 @@ public class Bot extends ListenerAdapter {
 
         final String token = args[0];
         JDA jda = JDABuilder.createLight(token,
-                GatewayIntent.GUILD_BANS,
-                GatewayIntent.DIRECT_MESSAGES,
-                GatewayIntent.GUILD_MESSAGES)
+                        EnumSet.noneOf(GatewayIntent.class))
 
                 .addEventListeners(new Bot())
                 .setActivity(Activity.watching("You, haha !!"))
@@ -77,6 +76,7 @@ public class Bot extends ListenerAdapter {
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if(event.getGuild() == null)
             return;
+
         if(event.getName().equals("ban")) {
             Member member = Objects.requireNonNull(event.getOption("user")).getAsMember();
             User user = Objects.requireNonNull(event.getOption("user")).getAsUser();
