@@ -20,6 +20,8 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 public class Bot extends ListenerAdapter {
@@ -51,8 +53,17 @@ public class Bot extends ListenerAdapter {
                         .setGuildOnly(true)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(
                                 Permission.BAN_MEMBERS,
-                                Permission.KICK_MEMBERS,
                                 Permission.MESSAGE_MANAGE))
+        );
+
+        commands.addCommands(
+                Commands.slash("unban", "Unban a user from this server.")
+                        .addOptions(new OptionData(OptionType.USER, "user", "The user to unban")
+                                .setRequired(true))
+                        .setGuildOnly(true)
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(
+                                Permission.BAN_MEMBERS
+                        ))
         );
         commands.queue();
     }
@@ -71,6 +82,11 @@ public class Bot extends ListenerAdapter {
             User user = Objects.requireNonNull(event.getOption("user")).getAsUser();
 
             ban(event, user, member);
+        }
+
+        else if(event.getName().equals("unban")){
+            User user = Objects.requireNonNull(event.getOption("user")).getAsUser();
+            unban(event, user);
         }
 
         else
@@ -111,5 +127,10 @@ public class Bot extends ListenerAdapter {
                 .reason(reason) // audit-log reason
                 .flatMap(v -> hook.sendMessage("Banned user " + user.getAsTag()))
                 .queue();
+
+    }
+
+    public void unban(SlashCommandInteractionEvent event, User user){
+        Objects.requireNonNull(event.getGuild()).unban(user).queue();
     }
 }
