@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -24,7 +25,13 @@ public class Bot extends ListenerAdapter {
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
         String user_tag = event.getUser().getAsTag();
-        event.getGuild().getTextChannels().get(0).sendMessage(String.format("test...%s has been assigned a new role. Their roles : %s", user_tag, event.getRoles())).queue();
+
+        event.getGuild().getTextChannels().get(0)
+                .sendMessage(String.format(
+                        "test...%s has been assigned a new role: %s",
+                        user_tag,
+                        event.getRoles().get(0).getName())
+                ).queue();
     }
 
     @Override
