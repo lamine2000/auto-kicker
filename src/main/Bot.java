@@ -17,13 +17,13 @@ public class Bot extends ListenerAdapter {
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
         System.out.println("event 1 triggered");
-        event.getGuild().getNewsChannels().get(0).sendMessage("test...GuildMemberRoleAddEvent triggered").queue();
+        event.getGuild().getTextChannels().get(0).sendMessage("test...GuildMemberRoleAddEvent triggered").queue();
     }
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
         System.out.println("event 2 triggered");
-        event.getGuild().getNewsChannels().get(0).sendMessage("test...GuildMemberJoinEvent triggered").queue();
+        event.getGuild().getTextChannels().get(0).sendMessage("test...GuildMemberJoinEvent triggered").queue();
     }
 
     public static void main(String[] args) throws LoginException {
