@@ -24,15 +24,17 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
-        String user_tag = event.getUser().getAsMention();
+        String user_mention = event.getUser().getAsMention();
 
         event.getGuild().getTextChannels().get(0)
                 .sendMessage(String.format(
-                        "test...%s has been assigned a new role: %s",
-                        user_tag,
+                        "Yaaay !!! %s has been assigned a new role: %s",
+                        user_mention,
                         event.getRoles().get(0).getName())
                 ).queue();
     }
+
+
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
