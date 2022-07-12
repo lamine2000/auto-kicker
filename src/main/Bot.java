@@ -22,21 +22,9 @@ import javax.security.auth.login.LoginException;
 public class Bot extends ListenerAdapter {
 
     @Override
-    public void onGenericRoleUpdate(@NotNull GenericRoleUpdateEvent event) {
-        String role = event.getRole().getName();
-        event.getGuild().getTextChannels().get(0).sendMessage("test...onGenericRoleUpdate event triggered. role name : " + role).queue();
-    }
-
-    @Override
-    public void onGenericGuildMember(@NotNull GenericGuildMemberEvent event) {
+    public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
         String user_tag = event.getUser().getAsTag();
-        event.getGuild().getTextChannels().get(0).sendMessage("test...onGenericGuildMember event triggered by : " + user_tag).queue();
-    }
-
-    @Override
-    public void onGuildMemberUpdate(@NotNull GuildMemberUpdateEvent event) {
-        String user_tag = event.getUser().getAsTag();
-        event.getGuild().getTextChannels().get(0).sendMessage("test...onGuildMemberUpdate event triggered by : " + user_tag).queue();
+        event.getGuild().getTextChannels().get(0).sendMessage(String.format("test...%s has been assigned a new role. Their roles : %s", user_tag, event.getRoles())).queue();
     }
 
     @Override
