@@ -5,11 +5,9 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
@@ -51,7 +49,10 @@ public class Bot extends ListenerAdapter {
                                 .setRequiredRange(0, 7))
                         .addOptions(new OptionData(OptionType.STRING, "reason", "The ban reason to use (default: Banned bu <user>)"))
                         .setGuildOnly(true)
-                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS))
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(
+                                Permission.BAN_MEMBERS,
+                                Permission.KICK_MEMBERS,
+                                Permission.MESSAGE_MANAGE))
         );
         commands.queue();
     }
@@ -81,21 +82,18 @@ public class Bot extends ListenerAdapter {
         event.deferReply(true).queue(); // Let the user know we received the command before doing anything else
         InteractionHook hook = event.getHook(); // This is a special webhook that allows you to send messages without having permissions in the channel and also allows ephemeral messages
         hook.setEphemeral(true); // All messages here will now be ephemeral implicitly
-        if (!Objects.requireNonNull(event.getMember()).hasPermission(Permission.BAN_MEMBERS))
-        {
+        if (!Objects.requireNonNull(event.getMember()).hasPermission(Permission.BAN_MEMBERS)) {
             hook.sendMessage("You do not have the required permissions to ban users from this server.").queue();
             return;
         }
 
         Member selfMember = Objects.requireNonNull(event.getGuild()).getSelfMember();
-        if (!selfMember.hasPermission(Permission.BAN_MEMBERS))
-        {
+        if (!selfMember.hasPermission(Permission.BAN_MEMBERS)) {
             hook.sendMessage("I don't have the required permissions to ban users from this server.").queue();
             return;
         }
 
-        if (member != null && !selfMember.canInteract(member))
-        {
+        if (member != null && !selfMember.canInteract(member)) {
             hook.sendMessage("This user is too powerful for me to ban.").queue();
             return;
         }
