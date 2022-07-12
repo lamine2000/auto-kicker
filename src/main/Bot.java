@@ -16,12 +16,12 @@ import javax.security.auth.login.LoginException;
 public class Bot extends ListenerAdapter {
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
-        super.onGuildMemberRoleAdd(event);
+        event.getGuild().getNewsChannelsByName("general", true).get(0).sendMessage("test...GuildMemberRoleAddEvent triggered").queue();
     }
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        super.onGuildMemberJoin(event);
+        event.getGuild().getNewsChannelsByName("general", true).get(0).sendMessage("test...GuildMemberJoinEvent triggered").queue();
     }
 
     public static void main(String[] args) throws LoginException {
