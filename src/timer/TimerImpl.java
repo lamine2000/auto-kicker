@@ -16,7 +16,7 @@ public class TimerImpl extends TimerTask {
         System.out.println(Thread.currentThread().getName()+" "+"the task has executed successfully "+ new Date());
         if(this.name.equalsIgnoreCase("task1")){
             try {
-                Thread.sleep( 600000);
+                Thread.sleep( 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
