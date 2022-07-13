@@ -8,8 +8,10 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.jetbrains.annotations.NotNull;
+import timer.TimerImpl;
 
 import javax.security.auth.login.LoginException;
+import java.util.Timer;
 
 public class Bot extends ListenerAdapter {
 
@@ -43,8 +45,11 @@ public class Bot extends ListenerAdapter {
                         user_mention,
                         event.getRoles().get(0).getAsMention())
                 ).queue();
-    }
+        TimerImpl ti = new TimerImpl("task1");
 
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(ti, 0, 1000);
+    }
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
