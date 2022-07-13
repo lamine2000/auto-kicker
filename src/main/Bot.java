@@ -1,5 +1,6 @@
 package main;
 
+import com.coreoz.wisp.Job;
 import com.coreoz.wisp.Scheduler;
 import com.coreoz.wisp.schedule.Schedules;
 import net.dv8tion.jda.api.JDABuilder;
@@ -40,13 +41,6 @@ public class Bot extends ListenerAdapter {
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
         String user_mention = event.getUser().getAsMention();
 
-        Scheduler scheduler = new Scheduler();
-        scheduler.schedule(
-                () -> {
-                    System.out.println("tic");
-                }, Schedules.fixedDelaySchedule(Duration.ofSeconds(2))
-        );
-
         event.getGuild().getTextChannels().get(0)
                 .sendMessage(String.format(
                         "Yaaay !!! %s has been assigned a new role: %s",
@@ -58,6 +52,13 @@ public class Bot extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
         String user_mention = event.getUser().getAsMention();
+
+        Scheduler scheduler = new Scheduler();
+        Job job = scheduler.schedule(
+                () -> {
+                    event.getGuild().kick(event.getUser(), "Unassigned for too long !").queue();
+                }, Schedules.fixedDelaySchedule(Duration.ofMinutes(2))
+        );
 
         event.getGuild().getTextChannels().get(0)
                 .sendMessage(String.format(
