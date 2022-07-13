@@ -1,5 +1,7 @@
 package main;
 
+import com.coreoz.wisp.Scheduler;
+import com.coreoz.wisp.schedule.Schedules;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -8,10 +10,9 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.jetbrains.annotations.NotNull;
-import timer.TimerImpl;
 
 import javax.security.auth.login.LoginException;
-import java.util.Timer;
+import java.time.Duration;
 
 public class Bot extends ListenerAdapter {
 
@@ -39,15 +40,19 @@ public class Bot extends ListenerAdapter {
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
         String user_mention = event.getUser().getAsMention();
 
+        Scheduler scheduler = new Scheduler();
+        scheduler.schedule(
+                () -> {
+                    System.out.println("tic");
+                }, Schedules.fixedDelaySchedule(Duration.ofSeconds(2))
+        );
+
         event.getGuild().getTextChannels().get(0)
                 .sendMessage(String.format(
                         "Yaaay !!! %s has been assigned a new role: %s",
                         user_mention,
                         event.getRoles().get(0).getAsMention())
                 ).queue();
-        TimerImpl ti = new TimerImpl("task1");
-
-        ti.run();
     }
 
     @Override
