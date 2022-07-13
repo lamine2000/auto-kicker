@@ -17,13 +17,6 @@ import java.time.Duration;
 public class Bot extends ListenerAdapter {
 
     public static void main(String[] args) throws LoginException {
-        Scheduler scheduler = new Scheduler();
-        scheduler.schedule(
-                () -> {
-                    System.out.println("tic");
-                }, Schedules.fixedDelaySchedule(Duration.ofSeconds(2))
-        );
-
         if(args.length < 1){
             System.out.println("Missing argument : token");
             System.exit(1);
@@ -46,6 +39,13 @@ public class Bot extends ListenerAdapter {
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
         String user_mention = event.getUser().getAsMention();
+
+        Scheduler scheduler = new Scheduler();
+        scheduler.schedule(
+                () -> {
+                    System.out.println("tic");
+                }, Schedules.fixedDelaySchedule(Duration.ofSeconds(2))
+        );
 
         event.getGuild().getTextChannels().get(0)
                 .sendMessage(String.format(
