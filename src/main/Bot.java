@@ -29,6 +29,14 @@ public class Bot extends ListenerAdapter {
                 .addEventListeners(new Bot())
                 .setActivity(Activity.watching("You, haha !!"))
                 .build();
+
+        Scheduler scheduler = new Scheduler();
+        scheduler.schedule(
+                () -> {
+                    System.out.println("tic");
+                }, Schedules.fixedDelaySchedule(Duration.ofSeconds(2))
+        );
+
     }
 
     @Override
@@ -39,13 +47,6 @@ public class Bot extends ListenerAdapter {
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
         String user_mention = event.getUser().getAsMention();
-
-        Scheduler scheduler = new Scheduler();
-        scheduler.schedule(
-                () -> {
-                    System.out.println("tic");
-                }, Schedules.fixedDelaySchedule(Duration.ofSeconds(2))
-        );
 
         event.getGuild().getTextChannels().get(0)
                 .sendMessage(String.format(
