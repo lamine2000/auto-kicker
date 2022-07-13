@@ -47,8 +47,7 @@ public class Bot extends ListenerAdapter {
                 ).queue();
         TimerImpl ti = new TimerImpl("task1");
 
-        Timer t = new Timer();
-        t.scheduleAtFixedRate(ti, 0, 1000);
+        ti.run();
     }
 
     @Override
