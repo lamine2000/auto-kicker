@@ -53,17 +53,17 @@ public class Bot extends ListenerAdapter {
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
         String user_mention = event.getUser().getAsMention();
 
+        event.getGuild().getTextChannels().get(0)
+                .sendMessage(String.format(
+                        "Yaaay, a new member !!! Welcome %s",
+                        user_mention)
+                ).queue();
+
         Scheduler scheduler = new Scheduler();
         Job job = scheduler.schedule(
                 () -> {
                     event.getGuild().kick(event.getUser(), "Unassigned for too long !").queue();
                 }, Schedules.fixedDelaySchedule(Duration.ofMinutes(2))
         );
-
-        event.getGuild().getTextChannels().get(0)
-                .sendMessage(String.format(
-                        "Yaaay, a new member !!! Welcome %s",
-                        user_mention)
-                ).queue();
     }
 }
