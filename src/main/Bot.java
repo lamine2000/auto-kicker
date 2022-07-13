@@ -47,6 +47,7 @@ public class Bot extends ListenerAdapter {
                         user_mention,
                         event.getRoles().get(0).getAsMention())
                 ).queue();
+        System.out.println(event.getGuild().getId());
     }
 
     @Override
@@ -60,7 +61,7 @@ public class Bot extends ListenerAdapter {
                 ).queue();
 
         Scheduler scheduler = new Scheduler();
-        Job job = scheduler.schedule(
+        scheduler.schedule(
                 () -> {
                     event.getGuild().kick(event.getUser(), "Unassigned for too long !").queue();
                 }, Schedules.fixedDelaySchedule(Duration.ofMinutes(2))
