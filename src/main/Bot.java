@@ -48,7 +48,12 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        System.out.println("event 2 triggered");
-        event.getGuild().getTextChannels().get(0).sendMessage("test...GuildMemberJoinEvent triggered").queue();
+        String user_mention = event.getUser().getAsMention();
+
+        event.getGuild().getTextChannels().get(0)
+                .sendMessage(String.format(
+                        "Yaaay, a new member !!! Welcome %s",
+                        user_mention)
+                ).queue();
     }
 }
