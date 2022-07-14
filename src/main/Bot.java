@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
-import java.awt.*;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -52,7 +52,6 @@ public class Bot extends ListenerAdapter {
                         user_mention,
                         event.getRoles().get(0).getAsMention())
                 ).queue();
-        System.out.println("\n\nid: " + event.getGuild().getId());
     }
 
     @Override
