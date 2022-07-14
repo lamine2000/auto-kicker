@@ -5,6 +5,9 @@ import com.coreoz.wisp.schedule.Schedules;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -15,9 +18,12 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
+import javax.swing.text.DateFormatter;
 import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Bot extends ListenerAdapter {
 
@@ -29,7 +35,9 @@ public class Bot extends ListenerAdapter {
 
         final String token = args[0];
         JDABuilder.create(token,
-                        GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_EMOJIS_AND_STICKERS)
+                        GatewayIntent.GUILD_MEMBERS,
+                        GatewayIntent.GUILD_PRESENCES,
+                        GatewayIntent.GUILD_EMOJIS_AND_STICKERS)
 
                 .addEventListeners(new Bot())
                 .setActivity(Activity.watching("You, haha !!"))
@@ -44,29 +52,19 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
-        String user_mention = event.getUser().getAsMention();
+        String user_name = event.getUser().getName();
 
         event.getGuild().getTextChannels().get(0)
                 .sendMessage(String.format(
                         "Yaaay !!! %s has been assigned a new role: %s",
-                        user_mention,
+                        user_name,
                         event.getRoles().get(0).getAsMention())
                 ).queue();
     }
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        EmbedBuilder eb = new EmbedBuilder();
-
-        eb.setTitle(String.format("Greetings, %s!!", event.getUser().getAsTag()),  event.getUser().getEffectiveAvatarUrl());
-        eb.setColor(new Color(0xf44336));
-        eb.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
-        eb.setAuthor("The Moderators", "https://i.imgur.com/g4awqas.jpeg");
-        eb.setFooter("Have fun !", "https://i.imgur.com/g4awqas.jpeg");
-        eb.setImage("https://i.imgur.com/g4awqas.jpeg");
-        eb.setThumbnail("https://i.imgur.com/g4awqas.jpeg");
-        eb.setTimestamp(Instant.now());
-
+        EmbedBuilder eb = greetingsEmbedBuilder(event.getMember());
         event.getGuild().getTextChannels().get(0)
                 .sendMessageEmbeds(eb.build()).queue(
                         message ->
@@ -79,5 +77,25 @@ public class Bot extends ListenerAdapter {
                     event.getGuild().kick(event.getUser(), "Unassigned for too long !").queue(),
                     Schedules.fixedDelaySchedule(Duration.ofMinutes(2))
         );
+    }
+
+    private static EmbedBuilder greetingsEmbedBuilder(Member member){
+        EmbedBuilder builder = new EmbedBuilder();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        String formatedCreationDate = df.format(member.getGuild().getTimeCreated());
+
+        builder.setTitle(String.format("Greetings, %s!!", member.getUser().getAsTag()),  member.getUser().getEffectiveAvatarUrl());
+        builder.setColor(new Color(0xf44336));
+        builder.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
+        builder.setAuthor("The Moderators");
+        builder.addField("Member:", String.valueOf(member.getGuild().getMemberCount()), true);
+        builder.addField("Created:", formatedCreationDate, true);
+        builder.addField("Owner:", Objects.requireNonNull(member.getGuild().getOwner()).getEffectiveName(), true);
+        builder.addField("Booster:", String.valueOf(member.getGuild().getBoostCount()), true);
+        builder.setThumbnail("https://i.imgur.com/g4awqas.jpeg");
+        builder.setFooter("Have fun !");
+        builder.setTimestamp(Instant.now());
+
+        return builder;
     }
 }
