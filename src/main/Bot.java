@@ -20,6 +20,10 @@ import org.jetbrains.annotations.NotNull;
 import javax.security.auth.login.LoginException;
 import javax.swing.text.DateFormatter;
 import java.awt.Color;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -79,7 +83,7 @@ public class Bot extends ListenerAdapter {
         );
     }
 
-    private static EmbedBuilder greetingsEmbedBuilder(Member member){
+    private static EmbedBuilder greetingsEmbedBuilder(Member member) throws IOException {
         EmbedBuilder builder = new EmbedBuilder();
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
         String formatedCreationDate = df.format(member.getGuild().getTimeCreated());
@@ -96,6 +100,9 @@ public class Bot extends ListenerAdapter {
         builder.setThumbnail(guild.getIconUrl());
         builder.setFooter("Have fun !");
         builder.setTimestamp(Instant.now());
+
+        //InputStream file = new URL(Objects.requireNonNull(guild.getIconUrl())).openStream();
+        //builder.setImage("attachment://");
 
         return builder;
     }
