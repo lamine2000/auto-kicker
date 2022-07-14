@@ -1,10 +1,11 @@
 package main;
 
-import com.coreoz.wisp.Job;
 import com.coreoz.wisp.Scheduler;
 import com.coreoz.wisp.schedule.Schedules;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
@@ -13,7 +14,9 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
+import java.awt.*;
 import java.time.Duration;
+import java.time.Instant;
 
 public class Bot extends ListenerAdapter {
 
@@ -34,7 +37,7 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-        System.out.println("API is readyssss!");
+        System.out.println("API is ready!");
     }
 
     @Override
@@ -47,18 +50,29 @@ public class Bot extends ListenerAdapter {
                         user_mention,
                         event.getRoles().get(0).getAsMention())
                 ).queue();
-        System.out.println(event.getGuild().getId());
+        System.out.println("\n\nid: " + event.getGuild().getId());
     }
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
         String user_mention = event.getUser().getAsMention();
 
+        EmbedBuilder eb = new EmbedBuilder();
+
+        eb.setTitle(String.format("Greetings, %s!!", user_mention),  null);
+        eb.setColor(new Color(0xf44336));
+        eb.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
+        eb.setAuthor("The Moderators", "https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
+        eb.setFooter("Text", "https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
+        eb.setImage("https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/logo%20-%20title.png");
+        eb.setThumbnail("https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/logo%20-%20title.png");
+        eb.setTimestamp(Instant.now());
+
         event.getGuild().getTextChannels().get(0)
-                .sendMessage(String.format(
-                        "Yaaay, a new member !!! Welcome %s",
-                        user_mention)
-                ).queue();
+                .sendMessage((CharSequence) eb.build()).queue(
+                        message ->
+                                message.addReaction(Emoji.fromUnicode("U+1F44C")).queue()
+                );
 
         Scheduler scheduler = new Scheduler();
         scheduler.schedule(
