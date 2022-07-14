@@ -88,10 +88,10 @@ public class Bot extends ListenerAdapter {
         builder.setColor(new Color(0xf44336));
         builder.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
         builder.setAuthor("The Moderators");
-        builder.addField("Member:", String.valueOf(member.getGuild().getMemberCount()), true);
-        builder.addField("Created:", formatedCreationDate, true);
-        builder.addField("Owner:", Objects.requireNonNull(member.getGuild().getOwner()).getEffectiveName(), true);
-        builder.addField("Booster:", String.valueOf(member.getGuild().getBoostCount()), true);
+        builder.addField(":busts_in_silhouette:Member:", String.valueOf(member.getGuild().getMemberCount()), true);
+        builder.addField(":date:Created:", formatedCreationDate, true);
+        builder.addField(":crown:Owner:", Objects.requireNonNull(member.getGuild().getOwner()).getEffectiveName(), true);
+        builder.addField(":tada:Booster:", String.valueOf(member.getGuild().getBoostCount()), true);
         builder.setThumbnail("https://i.imgur.com/g4awqas.jpeg");
         builder.setFooter("Have fun !");
         builder.setTimestamp(Instant.now());
