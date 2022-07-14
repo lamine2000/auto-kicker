@@ -68,8 +68,8 @@ public class Bot extends ListenerAdapter {
         eb.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
         eb.setAuthor("The Moderators", "https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
         eb.setFooter("Have fun !", "https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
-        eb.setImage("file:///home/lamine/discord-bots/auto-kicker/resources/i.png");
-        eb.setThumbnail("file:///home/lamine/discord-bots/auto-kicker/resources/i.png");
+        eb.setImage("https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
+        eb.setThumbnail("https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
         eb.setTimestamp(Instant.now());
 
         event.getGuild().getTextChannels().get(0)
