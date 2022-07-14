@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -18,12 +17,8 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
-import javax.swing.text.DateFormatter;
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -68,7 +63,7 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        EmbedBuilder eb = null;
+        EmbedBuilder eb;
         try {
             eb = greetingsEmbedBuilder(event.getMember());
         } catch (IOException e) {
@@ -110,9 +105,6 @@ public class Bot extends ListenerAdapter {
         builder.setImage(guild.getIconUrl());
         builder.setFooter("Have fun !");
         builder.setTimestamp(Instant.now());
-
-        //InputStream file = new URL(Objects.requireNonNull(guild.getIconUrl())).openStream();
-        //builder.setImage("attachment://");
 
         return builder;
     }
