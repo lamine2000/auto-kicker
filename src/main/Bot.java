@@ -28,12 +28,8 @@ public class Bot extends ListenerAdapter {
         }
 
         final String token = args[0];
-        JDABuilder.create(
-                token,
-                GatewayIntent.GUILD_MEMBERS,
-                GatewayIntent.GUILD_PRESENCES,
-                GatewayIntent.GUILD_EMOJIS_AND_STICKERS
-                )
+        JDABuilder.create(token,
+                        GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_EMOJIS_AND_STICKERS)
 
                 .addEventListeners(new Bot())
                 .setActivity(Activity.watching("You, haha !!"))
@@ -66,10 +62,10 @@ public class Bot extends ListenerAdapter {
         eb.setTitle(String.format("Greetings, %s!!", event.getUser().getAsTag()),  event.getUser().getEffectiveAvatarUrl());
         eb.setColor(new Color(0xf44336));
         eb.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
-        eb.setAuthor("The Moderators", "https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
-        eb.setFooter("Have fun !", "https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
-        eb.setImage("https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
-        eb.setThumbnail("https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
+        eb.setAuthor("The Moderators", "https://i.imgur.com/g4awqas.jpeg");
+        eb.setFooter("Have fun !", "https://i.imgur.com/g4awqas.jpeg");
+        eb.setImage("https://i.imgur.com/g4awqas.jpeg");
+        eb.setThumbnail("https://i.imgur.com/g4awqas.jpeg");
         eb.setTimestamp(Instant.now());
 
         event.getGuild().getTextChannels().get(0)
