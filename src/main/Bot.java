@@ -62,10 +62,10 @@ public class Bot extends ListenerAdapter {
         eb.setTitle(String.format("Greetings, %s!!", event.getUser().getAsTag()),  event.getUser().getEffectiveAvatarUrl());
         eb.setColor(new Color(0xf44336));
         eb.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
-        eb.setAuthor("The Moderators", "i.png");
-        eb.setFooter("Have fun !", "i.png");
-        eb.setImage("i.png");
-        eb.setThumbnail("i.png");
+        eb.setAuthor("The Moderators", "file:///home/lamine/discord-bots/auto-kicker/resources/i.png");
+        eb.setFooter("Have fun !", "file:///home/lamine/discord-bots/auto-kicker/resources/i.png");
+        eb.setImage("file:///home/lamine/discord-bots/auto-kicker/resources/i.png");
+        eb.setThumbnail("file:///home/lamine/discord-bots/auto-kicker/resources/i.png");
         eb.setTimestamp(Instant.now());
 
         event.getGuild().getTextChannels().get(0)
