@@ -95,7 +95,6 @@ public class Bot extends ListenerAdapter {
 
         builder.addBlankField(true);
         builder.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
-        builder.addBlankField(true);
 
         builder.addField(":busts_in_silhouette:Members", String.valueOf(guild.getMemberCount()), true);
         builder.addBlankField(true);
@@ -104,8 +103,8 @@ public class Bot extends ListenerAdapter {
         builder.addBlankField(true);
         builder.addField(":tada:Boosters", String.valueOf(guild.getBoostCount()), true);
         builder.addBlankField(true);
-        builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
-        builder.setImage(guild.getIconUrl());
+        //builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
+        builder.setImage(member.getUser().getEffectiveAvatarUrl());
         builder.setFooter("Have fun !");
         builder.setTimestamp(Instant.now());
 
