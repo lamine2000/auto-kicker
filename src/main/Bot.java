@@ -103,8 +103,8 @@ public class Bot extends ListenerAdapter {
         builder.addBlankField(true);
         builder.addField(":tada:Boosters", String.valueOf(guild.getBoostCount()), true);
         builder.addBlankField(true);
-        //builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
-        builder.setImage(member.getUser().getEffectiveAvatarUrl());
+        builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
+        //builder.setImage(member.getUser().getEffectiveAvatarUrl());
         builder.setFooter("Have fun !");
         builder.setTimestamp(Instant.now());
 
