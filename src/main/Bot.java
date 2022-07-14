@@ -55,8 +55,6 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        String user_mention = event.getUser().getAsMention();
-
         EmbedBuilder eb = new EmbedBuilder();
 
         eb.setTitle(String.format("Greetings, %s!!", event.getUser().getAsTag()),  event.getUser().getEffectiveAvatarUrl());
@@ -76,9 +74,9 @@ public class Bot extends ListenerAdapter {
 
         Scheduler scheduler = new Scheduler();
         scheduler.schedule(
-                () -> {
-                    event.getGuild().kick(event.getUser(), "Unassigned for too long !").queue();
-                }, Schedules.fixedDelaySchedule(Duration.ofMinutes(2))
+                () ->
+                    event.getGuild().kick(event.getUser(), "Unassigned for too long !").queue(),
+                    Schedules.fixedDelaySchedule(Duration.ofMinutes(2))
         );
     }
 }
