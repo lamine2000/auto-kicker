@@ -69,7 +69,7 @@ public class Bot extends ListenerAdapter {
         eb.setTimestamp(Instant.now());
 
         event.getGuild().getTextChannels().get(0)
-                .sendMessage((CharSequence) eb.build()).queue(
+                .sendMessageEmbeds(eb.build()).queue(
                         message ->
                                 message.addReaction(Emoji.fromUnicode("U+1F44C")).queue()
                 );
