@@ -64,7 +64,7 @@ public class Bot extends ListenerAdapter {
         eb.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
         eb.setAuthor("The Moderators", "https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
         eb.setFooter("Have fun !", "https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/zekroBot_Logo_-_round_small.png");
-        eb.setImage("https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/logo%20-%20title.png");
+        eb.setImage(event.getUser().getAvatarUrl());
         eb.setThumbnail("https://github.com/zekroTJA/DiscordBot/blob/master/.websrc/logo%20-%20title.png");
         eb.setTimestamp(Instant.now());
 
