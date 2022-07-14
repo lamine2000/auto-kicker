@@ -91,8 +91,11 @@ public class Bot extends ListenerAdapter {
 
         builder.setTitle(String.format("Greetings, %s!!", member.getUser().getAsTag()),  member.getUser().getEffectiveAvatarUrl());
         builder.setColor(new Color(0xf44336));
-        builder.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
         builder.setAuthor("The Moderators");
+
+        builder.addBlankField(true);
+        builder.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
+        builder.addBlankField(true);
 
         builder.addField(":busts_in_silhouette:Members", String.valueOf(guild.getMemberCount()), true);
         builder.addBlankField(true);
