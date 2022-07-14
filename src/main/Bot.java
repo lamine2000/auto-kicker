@@ -68,7 +68,12 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        EmbedBuilder eb = greetingsEmbedBuilder(event.getMember());
+        EmbedBuilder eb = null;
+        try {
+            eb = greetingsEmbedBuilder(event.getMember());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         event.getGuild().getTextChannels().get(0)
                 .sendMessageEmbeds(eb.build()).queue(
                         message ->
@@ -85,7 +90,7 @@ public class Bot extends ListenerAdapter {
 
     private static EmbedBuilder greetingsEmbedBuilder(Member member) throws IOException {
         EmbedBuilder builder = new EmbedBuilder();
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formatedCreationDate = df.format(member.getGuild().getTimeCreated());
         Guild guild = member.getGuild();
 
@@ -93,11 +98,11 @@ public class Bot extends ListenerAdapter {
         builder.setColor(new Color(0xf44336));
         builder.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
         builder.setAuthor("The Moderators");
-        builder.addField(":busts_in_silhouette:Member", String.valueOf(guild.getMemberCount()), true);
+        builder.addField(":busts_in_silhouette:Members", String.valueOf(guild.getMemberCount()), true);
         builder.addField(":date:Created", formatedCreationDate, true);
         builder.addField(":crown:Owner", Objects.requireNonNull(guild.getOwner()).getEffectiveName(), true);
-        builder.addField(":tada:Booster", String.valueOf(guild.getBoostCount()), true);
-        builder.setThumbnail(guild.getIconUrl());
+        builder.addField(":tada:Boosters", String.valueOf(guild.getBoostCount()), true);
+        builder.setThumbnail(member.getAvatarUrl());
         builder.setFooter("Have fun !");
         builder.setTimestamp(Instant.now());
 
