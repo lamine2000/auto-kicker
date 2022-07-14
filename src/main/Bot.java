@@ -91,7 +91,7 @@ public class Bot extends ListenerAdapter {
 
         builder.setTitle(String.format("Greetings, %s!!", member.getUser().getAsTag()),  member.getUser().getEffectiveAvatarUrl());
         builder.setColor(new Color(0xf44336));
-        builder.setAuthor("The Moderators", member.getGuild().getBannerUrl());
+        builder.setAuthor("The Moderators");
 
         builder.setDescription("\nHere are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
 
