@@ -28,8 +28,12 @@ public class Bot extends ListenerAdapter {
         }
 
         final String token = args[0];
-        JDABuilder.create(token,
-                        GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_EMOJIS_AND_STICKERS)
+        JDABuilder.create(
+                token,
+                GatewayIntent.GUILD_MEMBERS,
+                GatewayIntent.GUILD_PRESENCES,
+                GatewayIntent.GUILD_EMOJIS_AND_STICKERS
+                )
 
                 .addEventListeners(new Bot())
                 .setActivity(Activity.watching("You, haha !!"))
