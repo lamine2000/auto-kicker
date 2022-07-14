@@ -83,16 +83,17 @@ public class Bot extends ListenerAdapter {
         EmbedBuilder builder = new EmbedBuilder();
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
         String formatedCreationDate = df.format(member.getGuild().getTimeCreated());
+        Guild guild = member.getGuild();
 
         builder.setTitle(String.format("Greetings, %s!!", member.getUser().getAsTag()),  member.getUser().getEffectiveAvatarUrl());
         builder.setColor(new Color(0xf44336));
         builder.setDescription("Here are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
         builder.setAuthor("The Moderators");
-        builder.addField(":busts_in_silhouette:Member:", String.valueOf(member.getGuild().getMemberCount()), true);
-        builder.addField(":date:Created:", formatedCreationDate, true);
-        builder.addField(":crown:Owner:", Objects.requireNonNull(member.getGuild().getOwner()).getEffectiveName(), true);
-        builder.addField(":tada:Booster:", String.valueOf(member.getGuild().getBoostCount()), true);
-        builder.setThumbnail("https://i.imgur.com/g4awqas.jpeg");
+        builder.addField(":busts_in_silhouette:Member", String.valueOf(guild.getMemberCount()), true);
+        builder.addField(":date:Created", formatedCreationDate, true);
+        builder.addField(":crown:Owner", Objects.requireNonNull(guild.getOwner()).getEffectiveName(), true);
+        builder.addField(":tada:Booster", String.valueOf(guild.getBoostCount()), true);
+        builder.setThumbnail(guild.getIconUrl());
         builder.setFooter("Have fun !");
         builder.setTimestamp(Instant.now());
 
