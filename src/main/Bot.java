@@ -22,6 +22,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAccessor;
+import java.util.Date;
 import java.util.Objects;
 
 public class Bot extends ListenerAdapter {
@@ -91,7 +95,7 @@ public class Bot extends ListenerAdapter {
 
         builder.setTitle(String.format("**Greetings, %s!!**", member.getUser().getAsTag()),  member.getUser().getEffectiveAvatarUrl());
         builder.setColor(new Color(0xf44336));
-        builder.setAuthor("**_The Moderators_**");
+        builder.setAuthor("**_The Moderators_**").setImage(member.getAvatarUrl());
 
         builder.setDescription("\nHere are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
 
