@@ -22,10 +22,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalAccessor;
-import java.util.Date;
 import java.util.Objects;
 
 public class Bot extends ListenerAdapter {
@@ -95,19 +91,19 @@ public class Bot extends ListenerAdapter {
 
         builder.setTitle(String.format("**Greetings, %s!!**", member.getUser().getAsTag()),  member.getUser().getEffectiveAvatarUrl());
         builder.setColor(new Color(0xf44336));
-        builder.setAuthor("**_The Moderators_**").setImage(member.getAvatarUrl());
+        builder.setAuthor("The Moderators");
 
         builder.setDescription("\nHere are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
 
-        builder.addField(":busts_in_silhouette:`Members`", String.valueOf(guild.getMemberCount()), true);
+        builder.addField(":busts_in_silhouette:Members", String.valueOf(guild.getMemberCount()), true);
         builder.addBlankField(true);
-        builder.addField(":date:`Created`", formatedCreationDate, true);
-        builder.addField(":crown:`Owner`", Objects.requireNonNull(guild.getOwner()).getAsMention(), true);
+        builder.addField(":date:Created", formatedCreationDate, true);
+        builder.addField(":crown:Owner", Objects.requireNonNull(guild.getOwner()).getAsMention(), true);
         builder.addBlankField(true);
-        builder.addField(":tada:`Boosters`", String.valueOf(guild.getBoostCount()), true);
+        builder.addField(":tada:Boosters", String.valueOf(guild.getBoostCount()), true);
         builder.addBlankField(true);
         builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
-        builder.setFooter("__Have fun !__");
+        builder.setFooter("Have fun !");
         builder.setTimestamp(Instant.now());
 
         return builder;
