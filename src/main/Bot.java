@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
@@ -89,22 +89,21 @@ public class Bot extends ListenerAdapter {
         String formatedCreationDate = df.format(member.getGuild().getTimeCreated());
         Guild guild = member.getGuild();
 
-        builder.setTitle(String.format("Greetings, %s!!", member.getUser().getAsTag()),  member.getUser().getEffectiveAvatarUrl());
+        builder.setTitle(String.format("**Greetings, %s!!**", member.getUser().getAsTag()),  member.getUser().getEffectiveAvatarUrl());
         builder.setColor(new Color(0xf44336));
-        builder.setAuthor("The Moderators");
+        builder.setAuthor("**_The Moderators_**");
 
         builder.setDescription("\nHere are our rules:\n1- Don't blala\n2- Try and bleble first\n3- Have fun !");
 
-        builder.addField(":busts_in_silhouette:Members", String.valueOf(guild.getMemberCount()), true);
+        builder.addField(":busts_in_silhouette:`Members`", String.valueOf(guild.getMemberCount()), true);
         builder.addBlankField(true);
-        builder.addField(":date:Created", formatedCreationDate, true);
-        builder.addField(":crown:Owner", Objects.requireNonNull(guild.getOwner()).getEffectiveName(), true);
+        builder.addField(":date:`Created`", formatedCreationDate, true);
+        builder.addField(":crown:`Owner`", Objects.requireNonNull(guild.getOwner()).getAsMention(), true);
         builder.addBlankField(true);
-        builder.addField(":tada:Boosters", String.valueOf(guild.getBoostCount()), true);
+        builder.addField(":tada:`Boosters`", String.valueOf(guild.getBoostCount()), true);
         builder.addBlankField(true);
         builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
-        //builder.setImage("https://i.imgur.com/89NLyjb.jpeg");
-        builder.setFooter("Have fun !");
+        builder.setFooter("__Have fun !__");
         builder.setTimestamp(Instant.now());
 
         return builder;
