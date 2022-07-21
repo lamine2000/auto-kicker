@@ -12,7 +12,8 @@ public class Connection {
     public static MongoDatabase getDiscordBotsDB() throws Exception {
         MongoDatabase discordBotsDB;
 
-        try (MongoClient mongoClient = MongoClients.create(connectionString)) {
+        try{
+            MongoClient mongoClient = MongoClients.create(connectionString);
             discordBotsDB = mongoClient.getDatabase("discordBots");
             return discordBotsDB;
         }catch (Exception e){

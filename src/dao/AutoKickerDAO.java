@@ -11,7 +11,7 @@ import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 public class AutoKickerDAO {
-    private final MongoCollection<Document> collection;
+    private MongoCollection<Document> collection;
     private static final long delayBeforeKick = 7L;
 
     public AutoKickerDAO(String collectionName) throws Exception {
@@ -27,7 +27,7 @@ public class AutoKickerDAO {
                 .append("guildId", guildId)
                 .append("dateTimeToKick", timeToKick.toString());
 
-        System.out.println(this.collection.insertOne(doc));
+        this.collection.insertOne(doc);
         System.out.println("inserted");
     }
 

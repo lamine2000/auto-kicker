@@ -67,7 +67,8 @@ public class Bot extends ListenerAdapter {
             AutoKickerDAO dao = new AutoKickerDAO("membersToKick");
             dao.removeMember(userId, guildId);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -93,7 +94,8 @@ public class Bot extends ListenerAdapter {
             AutoKickerDAO dao = new AutoKickerDAO("membersToKick");
             dao.addNewMember(userId, guildId);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
     }
