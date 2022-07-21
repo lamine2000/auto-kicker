@@ -1,7 +1,6 @@
 package main;
 
-import com.coreoz.wisp.Scheduler;
-import com.coreoz.wisp.schedule.Schedules;
+import dao.AutoKickerDAO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -10,6 +9,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.security.auth.login.LoginException;
 import java.awt.Color;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -59,6 +58,17 @@ public class Bot extends ListenerAdapter {
                         user_name,
                         event.getRoles().get(0).getAsMention())
                 ).queue();
+
+        //remove user from the autokick database when the user get assigned their firs role
+        try {
+            String userId = event.getUser().getId();
+            String guildId = event.getGuild().getId();
+
+            AutoKickerDAO dao = new AutoKickerDAO("membersToKick");
+            dao.removeMember(userId, guildId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -75,12 +85,32 @@ public class Bot extends ListenerAdapter {
                                 message.addReaction(Emoji.fromUnicode("U+1F44C")).queue()
                 );
 
-        Scheduler scheduler = new Scheduler();
-        scheduler.schedule(
-                () ->
-                    event.getGuild().kick(event.getUser(), "Unassigned for too long !").queue(),
-                    Schedules.fixedDelaySchedule(Duration.ofMinutes(2))
-        );
+        //register the new user to the database
+        try {
+            String userId = event.getUser().getId();
+            String guildId = event.getGuild().getId();
+
+            AutoKickerDAO dao = new AutoKickerDAO("membersToKick");
+            dao.addNewMember(userId, guildId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void onGuildMemberRemove(@NotNull GuildMemberRemoveEvent event) {
+        //remove user from the autokick database when they the guild (kick, ban, leave)
+
+        try {
+            String userId = event.getUser().getId();
+            String guildId = event.getGuild().getId();
+
+            AutoKickerDAO dao = new AutoKickerDAO("membersToKick");
+            dao.removeMember(userId, guildId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static EmbedBuilder greetingsEmbedBuilder(Member member) throws IOException {
