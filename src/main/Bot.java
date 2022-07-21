@@ -89,7 +89,11 @@ public class Bot extends ListenerAdapter {
         String formatedCreationDate = df.format(member.getGuild().getTimeCreated());
         Guild guild = member.getGuild();
 
-        builder.setTitle(String.format("**Greetings, %s!!**", member.getUser().getAsTag()),  member.getUser().getEffectiveAvatarUrl());
+        builder.setTitle(String.format(
+                "**Greetings, %s!!**",
+                member.getUser().getAsTag()
+                ),
+                member.getUser().getEffectiveAvatarUrl());
         builder.setColor(new Color(0xf44336));
         builder.setAuthor("The Moderators");
 
